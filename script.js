@@ -1,72 +1,100 @@
 const firebaseConfig = {
-    apiKey: "AIzaSyAq_prIeX49TqGM6U-2HfNkO_eRW8Du5Cc",
-    authDomain: "pet-impedimentos.firebaseapp.com",
-    databaseURL: "https://pet-impedimentos-default-rtdb.firebaseio.com",
-    projectId: "pet-impedimentos",
-    storageBucket: "pet-impedimentos.appspot.com",
-    messagingSenderId: "954522036021",
-    appId: "1:954522036021:web:87bbe3b635cbcbb113ce7c",
-    measurementId: "G-5VR17YG7BM"
+  apiKey: "AIzaSyAq_prIeX49TqGM6U-2HfNkO_eRW8Du5Cc",
+  authDomain: "pet-impedimentos.firebaseapp.com",
+  databaseURL: "https://pet-impedimentos-default-rtdb.firebaseio.com",
+  projectId: "pet-impedimentos",
+  storageBucket: "pet-impedimentos.appspot.com",
+  messagingSenderId: "954522036021",
+  appId: "1:954522036021:web:87bbe3b635cbcbb113ce7c",
+  measurementId: "G-5VR17YG7BM"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-      
 
-function getUsuarios() {
-  db.collection("users").get().then((querySnapshot) => {
-    const tbody = document.querySelector("tbody");
-    tbody.innerHTML = "";
+function gerarLinha(dados) {
+  const row = document.createElement("tr");
+  for (const valor of dados) {
+      const cell = row.insertCell();
+      cell.style.backgroundColor = valor === true ? "lightblue" : "";
+  }
+  return row;
+}
 
-    querySnapshot.forEach((doc) => {
+function getHorarios(usuarioSelecionado) {
+  db.doc(`users/${usuarioSelecionado}`).get().then((doc) => {
+    if (doc.exists) {
+      const tbody = document.querySelector("tbody");
+      tbody.innerHTML = "";
+
       const usuario = doc.data();
-      const row = tbody.insertRow();
+      const horarios = [usuario.x1, usuario.x2, usuario.x3, usuario.x4, usuario.x5, usuario.x6, usuario.x7];
 
-      const nomeCell = row.insertCell();
-      nomeCell.textContent = usuario.nome;
+      for (const dados of horarios) {
+          const linha = gerarLinha(dados);
+          tbody.appendChild(linha);
+      }
+    } else {
+      console.error(`Documento não encontrado para o usuário: ${usuarioSelecionado}`);
+    }
+  });
+}
 
-      const idadeCell = row.insertCell();
-      idadeCell.textContent = usuario.idade;
+
+function confirmarMudanca(mensagem, callback) {
+  const confirmacao = window.confirm(mensagem);
+  if (confirmacao) {
+    callback();
+  }
+}
+
+function mudarHora(clickedCell) {
+  const mensagem = "Tem certeza que deseja alterar essa hora?";
+
+  confirmarMudanca(mensagem, () => {
+    const usuarios = document.querySelector('.usuarios');
+    const selectedUser = usuarios.querySelector('input[name="usuario"]:checked').value;
+
+    db.doc(`users/${selectedUser}`).get().then((doc) => {
+      if (doc.exists) {
+        const row = clickedCell.parentNode;
+        const rowIndex = row.rowIndex - 1;
+
+        const usuario = doc.data();
+        const horarios = [usuario.x1, usuario.x2, usuario.x3, usuario.x4, usuario.x5, usuario.x6, usuario.x7];
+
+        const hora = horarios[rowIndex];
+        const columnIndex = clickedCell.cellIndex;
+        hora[columnIndex] = !hora[columnIndex];
+
+        const docRef = db.doc(`users/${selectedUser}`);
+
+        docRef.update({ [`x${rowIndex + 1}`]: hora }).then(() => {
+          console.log("Horario atualizado!");
+          clickedCell.style.backgroundColor = hora[columnIndex] === true ? "lightblue" : "";
+        }).catch((error) => {
+          console.error("Erro ao atualizar:", error);
+        });
+      } else {
+        console.error(`Documento não encontrado para o usuário: ${selectedUser}`);
+      }
     });
   });
 }
 
-function alteraCor() {
-  // Get the clicked row from the global variable (assuming it's set in handleRowClick)
-  const clickedRow = window.clickedRow; // Adjust if you store the clicked row elsewhere
 
-  if (clickedRow) {
-    // Set the background color of the clicked row
-    clickedRow.style.backgroundColor = "lightblue"; // Change the color as desired
-
-    // Optionally, reset the color of previously clicked rows (if needed)
-    clickedRow.parentElement.querySelectorAll('tr').forEach(row => {
-      if (row !== clickedRow) {
-        row.style.backgroundColor = ""; // Reset background color
-      }
-    });
+function cellClick(event) {
+  const clickedCell = event.target;
+  if (clickedCell.tagName === "TD") {    
+    mudarHora(clickedCell);   
   }
 }
 
+const usuarios = document.querySelector('.usuarios');
+usuarios.addEventListener('change', (event) => {
+  const selectedUser = event.target.value;
+  getHorarios(selectedUser);
+});
 
 
-function handleRowClick(event) {
-  const clickedRow = event.target.closest("tr");
-  if (clickedRow) {
-    const userData = getRowData(clickedRow);    
-    console.log("Usuário clicado:", userData);
-    window.clickedRow = clickedRow;
-
-    alteraCor();
-  }
-}
-function getRowData(row) {
-  const nome = row.cells[0].textContent;
-  const idade = row.cells[1].textContent;
-  return { nome, idade };
-}
-
-getUsuarios();
 const tbody = document.querySelector("tbody");
-tbody.addEventListener("click", handleRowClick);
-
-
+tbody.addEventListener("click", cellClick);

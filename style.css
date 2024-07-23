@@ -3,9 +3,10 @@ table, th, td {
 }
 
 table{
-    width: 300px;
+    width: 600px;
 }
 
 td {
     text-align: center;
-  }
+    padding: 20px 40px;
+}
