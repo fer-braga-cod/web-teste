@@ -16,7 +16,10 @@ function gerarTabela(){
     for(var l = 0; l < 8; l++){
         const row = document.createElement("tr");
         for (var i = 0; i < 5; i++) {
-            const cell = row.insertCell();        
+            const cell = row.insertCell();
+            const div = document.createElement("div");
+            div.className = 'nomes';
+            cell.appendChild(div);        
         }
         tbody.appendChild(row);
     }
@@ -55,11 +58,16 @@ function getHorarios(usuarioSelecionado) {
         let linha = 0;
         for (const dados of horarios) {
             for (let coluna = 0; coluna < dados.length; coluna++) {
-            const cell = tbody.rows[linha].cells[coluna];
-            if (dados[coluna]) {
-                cell.innerHTML += (cell.innerHTML ? '<br>' : '') + usuario.nome;
-                cell.style.backgroundColor = "lightblue";
-            }
+              const cell = tbody.rows[linha].cells[coluna];
+              if (dados[coluna]) {                  
+                  cell.style.backgroundColor = "hsl(0, 0%, 90%)"; 
+                  const ul = document.createElement("ul");
+                  ul.textContent = usuario.nome;
+                  ul.className = 'nome';
+                  ul.style.backgroundColor = usuario.cor;                  
+                  const div = cell.querySelector("div");
+                  div.appendChild(ul);              
+              }
             }
             linha++;
         }
@@ -91,19 +99,41 @@ function buscarUsuario(nome) {
   
     return userId;
 }
+
+function marcarFiltro(nome){
+  const marcador = document.createElement("ul");
+  marcador.textContent = nome;
+  const container = document.querySelector("#container");
+  container.appendChild(marcador);
+}
+
+function limparTabela(){
+  tbody.innerHTML = "";
+  gerarTabela();
+  container.innerHTML = "";
+
+  var checkboxes = document.querySelectorAll('input[type="checkbox"]');  
+  for (var i = 0; i < checkboxes.length; i++) {
+    checkboxes[i].checked = false;
+  }
+}
   
 
 const usuarios = document.querySelector('.content');
 usuarios.addEventListener('change', (event) => {
   const checkbox = event.target;
   if (checkbox.checked) {    
-    buscarUsuario(checkbox.value);    
+    buscarUsuario(checkbox.value);
+    marcarFiltro(checkbox.value);    
   }else{
-    tbody.innerHTML = "";
-    gerarTabela();
+    limparTabela();
   }
 });
+
+document.getElementById("clear").onclick = function()
+{limparTabela()};
 
 gerarTabela();
 gerarDropdown();
 const tbody = document.querySelector("tbody");
+const container = document.querySelector("#container");

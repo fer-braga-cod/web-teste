@@ -2,16 +2,26 @@ table, th, td {
     border: 1px solid;
 }
 
-table{
-    width: 800px;
+table{    
     border-collapse: collapse;
 }
 
 td {
     text-align: center;
     height: 70px;
-    width: 148px;
-    white-space: pre-wrap;
+    width: 148px;    
+}
+
+.nome{
+    padding: 2px 2px;
+    margin: 2px 0px;
+    width:min-content;
+    border-radius: 8px;
+}
+.nomes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;      
 }
 
 body{
@@ -38,8 +48,10 @@ body{
     display: none;
     position: absolute;
     background-color: hsl(0, 0%, 95%);
-    min-width: 100px;
+    min-width: 100px;    
     box-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.8);
+    overflow-y: auto;
+    max-height: 150px;
 }
 .dropdown:hover .content{
     display: block;
@@ -49,4 +61,18 @@ body{
 }
 .dropdown label:hover{
     background-color: hsl(0, 0%, 90%);
+}
+
+#container{
+    display: flex;
+    flex-direction: column;
+    background-color: hsl(0, 0%, 95%);
+    overflow-y: auto;
+    max-height: 150px;
+    min-width: 100px;
+}
+
+ul{
+    padding: 7px 20px;
+    margin: 0%;
 }
