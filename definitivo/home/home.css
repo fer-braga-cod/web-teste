@@ -3,7 +3,7 @@ table, th, td {
 }
 
 table{    
-    border-collapse: collapse;
+    border-collapse: collapse;    
 }
 
 td {
@@ -13,7 +13,7 @@ td {
 }
 
 .nome{
-    padding: 2px 2px;
+    padding: 3px 6px;
     margin: 2px 0px;
     width:min-content;
     border-radius: 8px;
@@ -65,14 +65,19 @@ body{
 
 #container{
     display: flex;
-    flex-direction: column;
-    background-color: hsl(0, 0%, 95%);
-    overflow-y: auto;
-    max-height: 150px;
-    min-width: 100px;
+    flex-direction: row;    
+    overflow-x: auto;
+    max-width: 756px;
+    gap: 10px;    
 }
 
 ul{
     padding: 7px 20px;
     margin: 0%;
+    flex-shrink: 0;
+}
+
+.agenda{
+    background-color: azure;
+
 }

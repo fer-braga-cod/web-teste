@@ -71,6 +71,7 @@ function getHorarios(usuarioSelecionado) {
             }
             linha++;
         }
+        marcarFiltro(usuario.nome, usuario.cor);    
       } else {
         console.error(`Documento não encontrado para o usuário: ${usuarioSelecionado}`);
       }
@@ -100,11 +101,13 @@ function buscarUsuario(nome) {
     return userId;
 }
 
-function marcarFiltro(nome){
-  const marcador = document.createElement("ul");
-  marcador.textContent = nome;
+function marcarFiltro(nome, cor){
+  const ul = document.createElement("ul");
+  ul.textContent = nome;
+  ul.className = 'nome';
+  ul.style.backgroundColor = cor;   
   const container = document.querySelector("#container");
-  container.appendChild(marcador);
+  container.appendChild(ul);
 }
 
 function limparTabela(){
@@ -123,8 +126,7 @@ const usuarios = document.querySelector('.content');
 usuarios.addEventListener('change', (event) => {
   const checkbox = event.target;
   if (checkbox.checked) {    
-    buscarUsuario(checkbox.value);
-    marcarFiltro(checkbox.value);    
+    buscarUsuario(checkbox.value);    
   }else{
     limparTabela();
   }
