@@ -16,13 +16,13 @@ function cadastrar(){
 
     db.collection("users").add({
         nome: input,
-        x1: [false, false, false, false, false],
-        x2: [false, false, false, false, false],
-        x3: [false, false, false, false, false],
-        x4: [false, false, false, false, false],
-        x5: [false, false, false, false, false],
-        x6: [false, false, false, false, false],
-        x7: [false, false, false, false, false]
+        x1: ['07:15', false, false, false, false],
+        x2: ['09:25', false, false, false, false],
+        x3: ['13:15', false, false, false, false],
+        x4: ['15:25', false, false, false, false],
+        x5: ['17:30', false, false, false, false],
+        x6: ['18:30', false, false, false, false],
+        x7: ['20:40', false, false, false, false]
     })
     .then(() => {
         console.log("Cadastro Realizado!");
