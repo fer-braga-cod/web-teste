@@ -13,9 +13,9 @@ const db = firebase.firestore();
 
 function gerarTabela(){
     const tbody = document.querySelector("tbody");
-    for(var l = 0; l < 8; l++){
+    for(var l = 0; l < 7; l++){
         const row = document.createElement("tr");
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 6; i++) {
             const cell = row.insertCell();
             const div = document.createElement("div");
             div.className = 'nomes';
@@ -59,14 +59,16 @@ function getHorarios(usuarioSelecionado) {
         for (const dados of horarios) {
             for (let coluna = 0; coluna < dados.length; coluna++) {
               const cell = tbody.rows[linha].cells[coluna];
-              if (dados[coluna]) {                  
-                  cell.style.backgroundColor = "hsl(0, 0%, 90%)"; 
-                  const ul = document.createElement("ul");
-                  ul.textContent = usuario.nome;
-                  ul.className = 'nome';
-                  ul.style.backgroundColor = usuario.cor;                  
-                  const div = cell.querySelector("div");
-                  div.appendChild(ul);              
+              if ((typeof dados[coluna]) == "string") {
+                cell.textContent = dados[coluna];
+              }else if(dados[coluna]){
+                cell.style.backgroundColor = "hsl(0, 0%, 90%)"; 
+                const ul = document.createElement("ul");
+                ul.textContent = usuario.nome;
+                ul.className = 'nome';
+                ul.style.backgroundColor = usuario.cor;                  
+                const div = cell.querySelector("div");
+                div.appendChild(ul); 
               }
             }
             linha++;

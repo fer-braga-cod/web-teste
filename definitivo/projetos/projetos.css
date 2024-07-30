@@ -1,0 +1,70 @@
+#lista{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: bisque;
+    align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+  
+.dropdown-btn {
+    /* Estilize o botão que aciona o dropdown */
+}
+  
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+  
+.show {
+    display: block;
+}
+  
+.item-btn {
+    /* Estilize os botões dentro dos itens */
+}
+
+.dropdown-content li span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Adiciona reticências para indicar texto oculto */
+}
+.dropdown-content li {
+    display: flex;
+    justify-content: space-between;
+}
+.dropdown-content li span,
+.dropdown-content li button {
+  margin: 0;
+  padding: 5px; /* Ajuste o valor conforme necessário */
+}
+.dropdown-content li button {
+    max-width: 100px; /* Ajuste o valor conforme necessário */
+}
+ul{
+    padding: 0;
+}
+  
+  
+  
+  
+  

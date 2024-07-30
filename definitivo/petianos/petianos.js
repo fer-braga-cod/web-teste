@@ -192,13 +192,13 @@ function deleteUser(userID, nome){
                 if (elementoRemovido) {
                     elementoRemovido.parentElement.remove();
                     tbody.innerHTML = "";
+                    gerarTabela();
                 }
             })
             .catch((error) => {
                 console.error("Erro ao deletar documento:", error);
             });
-    });
-
+    });    
 }
 
 function deleteBT(){
