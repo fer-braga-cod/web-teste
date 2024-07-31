@@ -181,7 +181,7 @@ function confirmarDelete(mensagem, callback) {
 function deleteUser(userID, nome){
     const mensagem = "Tem certeza que deseja deletar esse petiano?";
   
-    confirmarMudanca(mensagem, () => { 
+    confirmarDelete(mensagem, () => { 
         const docRef = db.collection('users').doc(userID);
 
         docRef.delete()
